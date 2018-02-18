@@ -2,13 +2,13 @@ package com.udacity.sandwichclub;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
@@ -19,7 +19,7 @@ public class DetailActivity extends AppCompatActivity {
 
   public static final String EXTRA_POSITION = "extra_position";
   private static final int DEFAULT_POSITION = -1;
-  private static final String NOT_AVAILABLE="N/A";
+  private static final String NOT_AVAILABLE = "N/A";
 
   Sandwich sandwich;
   private ImageView imageView;
@@ -33,6 +33,7 @@ public class DetailActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_detail);
+    this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     imageView = findViewById(R.id.image_iv);
     alsoKnownTv = findViewById(R.id.also_known_tv);
@@ -69,6 +70,17 @@ public class DetailActivity extends AppCompatActivity {
     populateUI();
 
     setTitle(sandwich.getMainName());
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      // Respond to the action bar's Up/Home button
+      case android.R.id.home:
+        NavUtils.navigateUpFromSameTask(this);
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   private void populateUI() {
