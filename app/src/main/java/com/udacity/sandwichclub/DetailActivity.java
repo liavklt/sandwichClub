@@ -87,10 +87,17 @@ public class DetailActivity extends AppCompatActivity {
     Picasso.with(this)
         .load(sandwich.getImage())
         .into(imageView);
-    populatePlaceOfOrigin(placeOfOriginTv);
-    populateDescription(descriptionTv);
-    populateAlsoKnownAs(alsoKnownTv);
-    populateIngredients(ingredientsTv);
+    String placeOfOrigin = sandwich.getPlaceOfOrigin();
+    setTextViewFromString(placeOfOriginTv, placeOfOrigin);
+
+    String description = sandwich.getDescription();
+    setTextViewFromString(descriptionTv, description);
+
+    List<String> alsoKnownAs = sandwich.getAlsoKnownAs();
+    setTextViewFromList(alsoKnownTv, alsoKnownAs);
+
+    List<String> ingredients = sandwich.getIngredients();
+    setTextViewFromList(ingredientsTv, ingredients);
   }
 
   private void closeOnError() {
@@ -98,41 +105,19 @@ public class DetailActivity extends AppCompatActivity {
     Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
   }
 
-  private void populateIngredients(TextView ingredientsTv) {
-    List<String> ingredients = sandwich.getIngredients();
-    if (ingredients.isEmpty()) {
-      ingredientsTv.setText(NOT_AVAILABLE);
+  private void setTextViewFromList(TextView textView, List<String> sandwichDetails) {
+    if (sandwichDetails.isEmpty()) {
+      textView.setText(NOT_AVAILABLE);
     } else {
-      ingredientsTv.setText(TextUtils.join(",", ingredients));
+      textView.setText(TextUtils.join(",", sandwichDetails));
     }
   }
 
-  private void populatePlaceOfOrigin(TextView placeOfOriginTv) {
-    String placeOfOrigin = sandwich.getPlaceOfOrigin();
-    if (placeOfOrigin == null || placeOfOrigin.isEmpty()) {
-      placeOfOriginTv.setText(NOT_AVAILABLE);
+  private void setTextViewFromString(TextView textView, String sandwichElement) {
+    if (sandwichElement == null || sandwichElement.isEmpty()) {
+      textView.setText(NOT_AVAILABLE);
     } else {
-      placeOfOriginTv.setText(placeOfOrigin);
+      textView.setText(sandwichElement);
     }
-  }
-
-  private void populateAlsoKnownAs(TextView alsoKnownTv) {
-    List<String> alsoKnownAs = sandwich.getAlsoKnownAs();
-    if (alsoKnownAs.isEmpty()) {
-      alsoKnownTv.setText(NOT_AVAILABLE);
-    } else {
-      alsoKnownTv.setText(TextUtils.join(",", alsoKnownAs));
-    }
-
-  }
-
-  private void populateDescription(TextView descriptionTv) {
-    String description = sandwich.getDescription();
-    if (description == null) {
-      descriptionTv.setText(NOT_AVAILABLE);
-    } else {
-      descriptionTv.setText(sandwich.getDescription());
-    }
-
   }
 }
