@@ -19,7 +19,9 @@ public class DetailActivity extends AppCompatActivity {
 
   public static final String EXTRA_POSITION = "extra_position";
   private static final int DEFAULT_POSITION = -1;
-  Sandwich sandwich = null;
+  private static final String NOT_AVAILABLE="N/A";
+
+  Sandwich sandwich;
   private ImageView imageView;
   private TextView alsoKnownTv;
   private TextView descriptionTv;
@@ -65,15 +67,14 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     populateUI();
-    Picasso.with(this).setLoggingEnabled(true);
-    Picasso.with(this)
-        .load(sandwich.getImage())
-        .into(imageView);
 
     setTitle(sandwich.getMainName());
   }
 
   private void populateUI() {
+    Picasso.with(this)
+        .load(sandwich.getImage())
+        .into(imageView);
     populatePlaceOfOrigin(placeOfOriginTv);
     populateDescription(descriptionTv);
     populateAlsoKnownAs(alsoKnownTv);
@@ -88,7 +89,7 @@ public class DetailActivity extends AppCompatActivity {
   private void populateIngredients(TextView ingredientsTv) {
     List<String> ingredients = sandwich.getIngredients();
     if (ingredients.isEmpty()) {
-      ingredientsTv.setVisibility(View.GONE);
+      ingredientsTv.setText(NOT_AVAILABLE);
     } else {
       ingredientsTv.setText(TextUtils.join(",", ingredients));
     }
@@ -96,8 +97,8 @@ public class DetailActivity extends AppCompatActivity {
 
   private void populatePlaceOfOrigin(TextView placeOfOriginTv) {
     String placeOfOrigin = sandwich.getPlaceOfOrigin();
-    if (placeOfOrigin == null) {
-      placeOfOriginTv.setVisibility(View.GONE);
+    if (placeOfOrigin == null || placeOfOrigin.isEmpty()) {
+      placeOfOriginTv.setText(NOT_AVAILABLE);
     } else {
       placeOfOriginTv.setText(placeOfOrigin);
     }
@@ -106,7 +107,7 @@ public class DetailActivity extends AppCompatActivity {
   private void populateAlsoKnownAs(TextView alsoKnownTv) {
     List<String> alsoKnownAs = sandwich.getAlsoKnownAs();
     if (alsoKnownAs.isEmpty()) {
-      alsoKnownTv.setVisibility(View.GONE);
+      alsoKnownTv.setText(NOT_AVAILABLE);
     } else {
       alsoKnownTv.setText(TextUtils.join(",", alsoKnownAs));
     }
@@ -116,7 +117,7 @@ public class DetailActivity extends AppCompatActivity {
   private void populateDescription(TextView descriptionTv) {
     String description = sandwich.getDescription();
     if (description == null) {
-      descriptionTv.setVisibility(View.GONE);
+      descriptionTv.setText(NOT_AVAILABLE);
     } else {
       descriptionTv.setText(sandwich.getDescription());
     }
